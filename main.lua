@@ -75,24 +75,25 @@ function love.update(dt)
     if (i > 2) then
         tcpSocket:send("cmd:client\n")
         data = tcpSocket:receive("*l")
-        if data:sub(0,7) == "jso:lst" then
+        if data then
+            if data:sub(0,7) == "jso:lst" then
             tab = json.decode(data:sub(9))
             --updateList()
-        end
-        for k,v in pairs(tab) do
-            if (not avatar[v.login]) then
-                if v.login and loadImg(v.login) then
-                    avatar[v.login] = love.graphics.newImage(v.login..".jpg")
-                else
-                    if not v.login then
-                        v.login = "default"
-                        v.hostname = " ? telnet ?"
+            end
+            for k,v in pairs(tab) do
+                if (not avatar[v.login]) then
+                    if v.login and loadImg(v.login) then
+                        avatar[v.login] = love.graphics.newImage(v.login..".jpg")
+                    else
+                        if not v.login then
+                            v.login = "default"
+                            v.hostname = " ? telnet ?"
+                        end
+                        avatar[v.login] = love.graphics.newImage("default.png")
                     end
-                    avatar[v.login] = love.graphics.newImage("default.png")
                 end
             end
         end
-
         i = 0
     end
 
