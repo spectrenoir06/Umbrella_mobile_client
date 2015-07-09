@@ -1,7 +1,6 @@
 
 
 local socket = require "socket"
-local struct = require "struct"
 local json   = require "json"
 local http = require("socket.http")
 
@@ -45,9 +44,6 @@ function drawList()
         love.graphics.print(id, 175, id * 190 + 10)
         love.graphics.print(v.login, 188, id * 190 + 10)
         love.graphics.print(v.hostname, 250, id * 190 + 10)
-
-
-
         id = id + 1
     end
 end
@@ -82,7 +78,7 @@ function love.update(dt)
         end
         for k,v in pairs(tab) do
             if (not avatar[v.login]) then
-                if loadImg(v.login) then
+                if v.login and loadImg(v.login) then
                     avatar[v.login] = love.graphics.newImage(v.login..".jpg")
                 else
                     avatar[v.login] = love.graphics.newImage("default.png")
@@ -96,5 +92,5 @@ function love.update(dt)
 end
 
 function love.draw()
-drawList()
+    drawList()
 end
