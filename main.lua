@@ -71,9 +71,6 @@ function love.update(dt)
         data = tcpSocket:receive("*l")
         if data:sub(0,7) == "jso:lst" then
             tab = json.decode(data:sub(9))
-            for k,v in pairs(tab) do
-                print(v.login.." : "..v.hostname)
-            end
             --updateList()
         end
         for k,v in pairs(tab) do
@@ -81,6 +78,10 @@ function love.update(dt)
                 if v.login and loadImg(v.login) then
                     avatar[v.login] = love.graphics.newImage(v.login..".jpg")
                 else
+                    if not v.login then
+                        v.login = "default"
+                        v.hostname = " ????"
+                    end
                     avatar[v.login] = love.graphics.newImage("default.png")
                 end
             end
