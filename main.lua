@@ -37,13 +37,19 @@ end
 
 avatar = {}
 
+function drawPeople(v,x,y)
+    love.graphics.draw( avatar[v.login], x, y)
+    love.graphics.setColor( 0, 0, 0, 200)
+    love.graphics.rectangle( 'fill', x, y, 160, 30)
+    love.graphics.setColor( 255, 255, 255, 255)
+    love.graphics.print(v.login,    x + 10, y + 2)
+    love.graphics.print(v.hostname, x + 10, y + 15)
+end
+
 function drawList()
     id = 0
     for k,v in pairs(tab) do
-        love.graphics.draw( avatar[v.login], 0, id * 190)
-        love.graphics.print(id, 175, id * 190 + 10)
-        love.graphics.print(v.login, 188, id * 190 + 10)
-        love.graphics.print(v.hostname, 250, id * 190 + 10)
+        drawPeople(v, math.floor(id / 4) * 160, (id * 190) % (190*4))
         id = id + 1
     end
 end
@@ -80,7 +86,7 @@ function love.update(dt)
                 else
                     if not v.login then
                         v.login = "default"
-                        v.hostname = " ????"
+                        v.hostname = " ? telnet ?"
                     end
                     avatar[v.login] = love.graphics.newImage("default.png")
                 end
