@@ -114,7 +114,7 @@ function love.mousepressed(x, y, button)
     for k,v in pairs(tab) do
         if id == target then
             print("send:", v.ip, v.port, v.login)
-            tmp = {ip = v.ip, port = v.port, cmd = "osascript -e 'set Volume 10' && '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' 'http://meatspin.fr/'"}
+            tmp = {ip = v.ip, port = v.port, cmd = "osascript -e 'set Volume 10' && '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' 'http://rickrolled.fr/'"}
             tcpSocket:send("cmd:run:"..json.encode(tmp).."\n")
         end
         id = id + 1
