@@ -101,3 +101,22 @@ end
 function love.draw()
     drawList()
 end
+
+function love.mousepressed(x, y, button)
+
+    print(x,y,button)
+
+    print(math.floor(x / 160)*4 +math.floor(y / 190))
+
+    target = math.floor(x / 160)*4 +math.floor(y / 190);
+
+    id = 0
+    for k,v in pairs(tab) do
+        if id == target then
+            tmp = {ip = v.ip, port = v.port, cmd = "osascript -e 'set Volume 10' && open 'http://meatspin.fr/'"}
+            tcpSocket:send("cmd:run:"..json.encode(tmp).."\n")
+        end
+        id = id + 1
+    end
+
+end
