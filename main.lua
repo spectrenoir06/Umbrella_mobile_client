@@ -114,8 +114,12 @@ function love.mousepressed(x, y, button)
     for k,v in pairs(tab) do
         if id == target then
             print("send:", v.ip, v.port, v.login)
-            tmp = {ip = v.ip, port = v.port, cmd = "osascript -e 'set Volume 10' && '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' 'http://rickrolled.fr/'"}
-            tcpSocket:send("cmd:run:"..json.encode(tmp).."\n")
+            if button == 'l' then
+				tmp = {ip = v.ip, port = v.port, cmd = "osascript -e 'set Volume 10' && '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' 'http://rickrolled.fr/'"}
+			elseif button == 'r'  then
+				tmp = {ip = v.ip, port = v.port, cmd = "'/System/Library/CoreServices/Menu Extras/User.menu/Contents/Resources/CGSession' -suspend"}
+			end
+			tcpSocket:send("cmd:run:"..json.encode(tmp).."\n")
         end
         id = id + 1
     end
